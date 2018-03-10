@@ -6,6 +6,8 @@
 #include <string>
 #include "FeatureVector.hpp"
 
+
+
 std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector) {
     if (!input_stream) {
         std::cout << "failure" << std::endl;

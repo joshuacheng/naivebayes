@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 
+//TODO: find a way to automatically stop adding feature vectors if the file is done.
+
 DataFile::DataFile(std::string fileName) {
     std::ifstream file(fileName);
 

@@ -6,17 +6,15 @@
 #define NAIVEBAYES_TRAININGDATA_HPP
 
 #include <vector>
-#include <istream>
 #include <string>
 #include "FeatureVector.hpp"
 #include "DataFile.hpp"
 
-using std::vector;
 
 class TrainingData {
 private:
     DataFile images_;
-    vector<int> trueValues_;
+    std::vector<std::string> trueValues_;
 
 public:
     explicit TrainingData(std::string trainingImagesFileName, std::string trainingLabelsFileName);

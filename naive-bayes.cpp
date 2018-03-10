@@ -10,15 +10,12 @@
 using std::string;
 
 int main() {
-    std::ifstream file("digitdata/trainingimages");
-    FeatureVector featureVector;
-//    DataFile dataFile("digitdata/trainingimages");
-//    dataFile.printGivenFeatureVector(1);
+//    std::ifstream file("digitdata/trainingimages");
+    DataFile dataFile("digitdata/trainingimages");
+    dataFile.printGivenFeatureVector(4999);
 //    std::cout << dataFile.getSize() << std::endl;
 
-    file >> featureVector;
-    std::cout << featureVector << std::endl;
-
+    TrainingData trainingData("digitdata/trainingimages", "digitdata/traininglabels");
 
 
 
