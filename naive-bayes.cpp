@@ -3,43 +3,23 @@
 //
 #include <iostream>
 #include <fstream>
-#include "featurevector.hpp"
+#include "FeatureVector.hpp"
+#include "DataFile.hpp"
+#include "TrainingData.hpp"
 
 using std::string;
 
 int main() {
-//    string input;
-    std::ifstream file("trainingimages");
+    std::ifstream file("digitdata/trainingimages");
     FeatureVector featureVector;
-
-
-    if (!file) {
-        std::cout << "failure" << std::endl;
-        return 0;
-    }
-
-    file >> featureVector;
-    std::cout << featureVector << std::endl;
+//    DataFile dataFile("digitdata/trainingimages");
+//    dataFile.printGivenFeatureVector(1);
+//    std::cout << dataFile.getSize() << std::endl;
 
     file >> featureVector;
     std::cout << featureVector << std::endl;
 
 
-    //    bool data[29][29];
-//    char currentChar;
-//
-//        for (int i = 0; i < 29; ++i) {
-//            for (int j = 0; j < 29; ++j) {
-//                file.get(currentChar);
-//                data[i][j] = currentChar == '#' || currentChar == '+';
-//                if (data[i][j]) {
-//                    std::cout << 1;
-//                } else {
-//                    std::cout << 0;
-//                }
-//            }
-//            std::cout << std::endl;
-//        }
 
 
 

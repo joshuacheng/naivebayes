@@ -8,7 +8,9 @@
 #include <istream>
 
 class FeatureVector {
-    static const int DIMENSIONS = 29;
+
+    // Number images have 29 width and 28 height for some reason.
+    static const int DIMENSIONS = 28;
     bool features_[DIMENSIONS][DIMENSIONS];
 
 public:

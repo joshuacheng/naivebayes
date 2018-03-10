@@ -3,7 +3,8 @@
 //
 #include <vector>
 #include <iostream>
-#include "featurevector.hpp"
+#include <string>
+#include "FeatureVector.hpp"
 
 std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector) {
     if (!input_stream) {
@@ -11,14 +12,12 @@ std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVect
         return input_stream;
     }
 
-    char currentChar;
-
+    std::string str;
 
     for (int i = 0; i < FeatureVector::DIMENSIONS; ++i) {
-        for (int j = 0; j < FeatureVector::DIMENSIONS; ++j) {
-            input_stream.get(currentChar);
-
-            featureVector.features_[i][j] = currentChar == '#' || currentChar == '+';
+        getline(input_stream, str);
+        for (int k = 0; k < str.size(); ++k) {
+            featureVector.features_[i][k] = str[k] == '#' || str[k] == '+';
         }
     }
 
