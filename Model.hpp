@@ -13,6 +13,7 @@ public:
     explicit Model(std::string trainingImageFileName, std::string trainingImageLabelsName);
     DataFile getDataFile();
 
+
 private:
     static const int DIMENSIONS = 28;
     double probabilities_[DIMENSIONS][DIMENSIONS][10][2];

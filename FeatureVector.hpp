@@ -10,16 +10,15 @@
 class FeatureVector {
 
     static const int DIMENSIONS = 28;
-    bool features_[DIMENSIONS][DIMENSIONS];
-    std::vector<std::vector<bool>> features1_;
+    std::vector<bool> features_;
 
 public:
 
-    FeatureVector()=default;
+    FeatureVector();
 
     friend std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector);
     friend std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector);
-    std::vector<std::vector<bool>> getFeatureArray();
+    std::vector<bool> getFeatureArray();
 
 };
 

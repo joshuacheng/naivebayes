@@ -17,10 +17,10 @@ int main() {
 //    std::cout << dataFile.getSize() << std::endl;
 
     Model model("digitdata/trainingimages", "digitdata/traininglabels");
+//    DataFile file1("digitdata/trainingimages");
+//    DataFile file = model.getDataFile();
 
-    DataFile file = model.getDataFile();
-
-    file.printGivenFeatureVector(5);
+//    file.printGivenFeatureVector(5);
 
 
 //    }

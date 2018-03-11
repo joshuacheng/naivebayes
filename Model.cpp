@@ -34,10 +34,10 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
             // go through the entire data file for that one pixel
             for (int k = 0; k < numberOfImages; ++k) {
                 int realValueOfCurrentImage = std::stoi(trueValues_[k]);
-                std::vector<std::vector<bool>> currentFeatureArray = testImages[k].getFeatureArray();
+                std::vector<bool> currentFeature1Array = testImages[k].getFeatureArray();
 
                 // If the kth image's (i, j) pixel is black, increment counter in probabilities_
-                if (currentFeatureArray[i][j]) {
+                if (currentFeature1Array[i*28 + j]) {
                     probabilities_[i][j][realValueOfCurrentImage][1]++;
                 }
 
@@ -70,10 +70,11 @@ std::vector<double> Model::calculatePercentageOfEachNumber() {
         percentages[index]++;
     }
 
-    for (double &m : percentages) {
+//    for (double &m : percentages) {
 //        m /= 5000.0;
-    }
+//    }
 
     return percentages;
 
 }
+
