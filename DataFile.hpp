@@ -15,7 +15,7 @@ class DataFile {
 public:
     explicit DataFile(std::string fileName);
     void printGivenFeatureVector(int index);
-    int getSize();
+    int getNumberOfImages();
     vector<FeatureVector> getImages();
 private:
     vector<FeatureVector> images_;

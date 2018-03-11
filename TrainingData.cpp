@@ -8,7 +8,12 @@
 #include "TrainingData.hpp"
 
 
-
+/** Initializes a training data object, which contains all the training images
+ *  and their corresponding actual numbers.
+ *
+ * @param trainingImagesFileName    file path of training images
+ * @param trainingLabelsFileName    file path of training labels
+ */
 TrainingData::TrainingData(std::string trainingImagesFileName, std::string trainingLabelsFileName) :
                                 images_(trainingImagesFileName) {
 

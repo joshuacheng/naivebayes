@@ -6,18 +6,21 @@
 #include "FeatureVector.hpp"
 #include "DataFile.hpp"
 #include "TrainingData.hpp"
+#include "Model.hpp"
 
 using std::string;
 
 int main() {
 //    std::ifstream file("digitdata/trainingimages");
-    DataFile dataFile("digitdata/trainingimages");
-    dataFile.printGivenFeatureVector(4999);
+//    DataFile dataFile("digitdata/trainingimages");
+//    dataFile.printGivenFeatureVector(4999);
 //    std::cout << dataFile.getSize() << std::endl;
 
-    TrainingData trainingData("digitdata/trainingimages", "digitdata/traininglabels");
+    Model model("digitdata/trainingimages", "digitdata/traininglabels");
 
+    DataFile file = model.getDataFile();
 
+    file.printGivenFeatureVector(5);
 
 
 //    }

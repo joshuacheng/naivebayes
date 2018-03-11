@@ -8,6 +8,11 @@
 
 //TODO: find a way to automatically stop adding feature vectors if the file is done.
 
+/** Constructor for a data file, which just contains all the feature vectors
+ *  of a given file.
+ *
+ * @param fileName
+ */
 DataFile::DataFile(std::string fileName) {
     std::ifstream file(fileName);
 
@@ -20,19 +25,19 @@ DataFile::DataFile(std::string fileName) {
     while (file) {
         file >> featureVector;
 
-
         images_.push_back(featureVector);
     }
 
 
 }
 
+// Prints the feature vector at given index, used for testing
 void DataFile::printGivenFeatureVector(int index) {
     std::cout << images_[index];
 }
 
-int DataFile::getSize() {
-    return images_.size();
+int DataFile::getNumberOfImages() {
+    return static_cast<int>(images_.size());
 }
 
 vector<FeatureVector> DataFile::getImages() {
