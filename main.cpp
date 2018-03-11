@@ -11,15 +11,16 @@
 using std::string;
 
 int main() {
-//    std::ifstream file("digitdata/trainingimages");
+    std::ifstream file("digitdata/trainingimages");
+    std::ofstream modelFile("currentModel");
 //    DataFile dataFile("digitdata/trainingimages");
 //    dataFile.printGivenFeatureVector(4999);
 //    std::cout << dataFile.getSize() << std::endl;
 
     Model model("digitdata/trainingimages", "digitdata/traininglabels");
-//    DataFile file1("digitdata/trainingimages");
+//    model.testPrint();
+    modelFile << model;
 //    DataFile file = model.getDataFile();
-
 //    file.printGivenFeatureVector(5);
 
 

@@ -14,7 +14,7 @@ class FeatureVector {
 
 public:
 
-    FeatureVector();
+    FeatureVector()=default;
 
     friend std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector);
     friend std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector);

@@ -6,8 +6,6 @@
 #include <string>
 #include "FeatureVector.hpp"
 
-FeatureVector::FeatureVector() : features_(FeatureVector::DIMENSIONS) {}
-
 /** Overloaded >> operator for writing to a feature vector from a file.
  *
  * @param input_stream      input stream for file, usually ifstream
@@ -35,24 +33,21 @@ std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVect
 
 // Overloaded << operator just for printing out a feature vector with 1's and 0's.
 std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector) {
-//    for (int i = 0; i < FeatureVector::DIMENSIONS; ++i) {
-//        for (int j = 0; j < FeatureVector::DIMENSIONS; ++j) {
-//            if (featureVector.features_[i][j]) {
-//                std::cout << 1;
-//            } else {
-//                std::cout << 0;
-//            }
-//        }
-//        std::cout << std::endl;
-//    }
 
-    for (bool b : featureVector.features_) {
-        if (b) {
+    for (int i = 0; i < featureVector.features_.size(); ++i) {
+        if (featureVector.features_[i]) {
             std::cout << 1;
         } else {
             std::cout << 0;
         }
+
+        // Start next line after 28 columns.
+        if ((i + 1) % 28 == 0 && i != 0) {
+            std::cout << std::endl;
+        }
     }
+
+    return output_stream;
 }
 
 std::vector<bool> FeatureVector::getFeatureArray() {
