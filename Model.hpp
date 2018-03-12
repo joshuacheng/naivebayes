@@ -14,6 +14,8 @@ class Model {
 public:
     explicit Model(std::string trainingImageFileName, std::string trainingImageLabelsName);
     explicit Model(std::string existingModelFileName);
+    void fillOutProbabilities();
+    int classifyFeatureVector(FeatureVector vector);
     DataFile getDataFile();
     void testPrint() const;
     friend std::ifstream & operator>>(std::ifstream& input_stream, Model &model);
@@ -26,7 +28,7 @@ private:
     double probabilities_[DIMENSIONS][DIMENSIONS][10][2];
     DataFile dataFile;
     std::vector<std::string> trueValues_;
-    std::vector<double> calculatePercentageOfEachNumber();
+    std::vector<double> calcAppearancesOfEachNumber();
 
 };
 

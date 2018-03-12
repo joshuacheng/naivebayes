@@ -22,7 +22,37 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
     // Pop last value because for some reason it was being copied twice.
     trueValues_.pop_back();
 
-    std::vector<double> appearancesOfEachNumber = calculatePercentageOfEachNumber();
+    fillOutProbabilities();
+
+}
+
+// Creates a new Model object with an existing model file.
+Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0} {
+    std::ifstream input_stream(existingModelFileName);
+
+    double probability;
+    for (int i = 0; i < Model::DIMENSIONS; ++i) {
+        for (int j = 0; j < Model::DIMENSIONS; ++j) {
+            for (int k = 0; k < 10; ++k) {
+                input_stream >> probability;
+                if (input_stream.eof()) {
+                    std::cout << "This model is not long enough." << std::endl;
+                    return;
+                }
+                probabilities_[i][j][k][0] = probability;
+                input_stream >> probability;
+                probabilities_[i][j][k][1] = probability;
+            }
+        }
+    }
+}
+
+/** This method fills out the 4D probabilities array by using all
+ *  the member objects which have been instantiated at this point.
+ *
+ */
+void Model::fillOutProbabilities() {
+    std::vector<double> appearancesOfEachNumber = calcAppearancesOfEachNumber();
     std::vector<FeatureVector> testImages = dataFile.getImages();
     int numberOfImages = static_cast<int>(trueValues_.size());
 
@@ -45,15 +75,11 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
                 }
             }
 
-            if (i == 27 && j == 17) {
-                std::cout << probabilities_[i][j][1][0] << " " << probabilities_[i][j][1][1];
-            }
-
             for (int number = 0; number < 10; ++number) {
 
                 // Turn number of appearances into Laplace smoothed probability.
                 probabilities_[i][j][number][1] = (probabilities_[i][j][number][1] + LAPLACEK) /
-                                                    (appearancesOfEachNumber[number] + (2 * LAPLACEK));
+                                                  (appearancesOfEachNumber[number] + (2 * LAPLACEK));
 
                 // (i,j,l,0) is just the complement to (i,j,l,1). Since there are
                 // only two outcomes, one is just 1 minus the other.
@@ -63,31 +89,19 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
             std::cout << "Pixel (" << i << ", " << j << ") done" << std::endl;
         }
     }
-
 }
 
-// Creates a new Model object with an existing model file.
-Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0} {
-    std::ifstream input_stream(existingModelFileName);
+int Model::classifyFeatureVector(const FeatureVector vector) {
 
-    double probability;
-    for (int i = 0; i < Model::DIMENSIONS; ++i) {
-        for (int j = 0; j < Model::DIMENSIONS; ++j) {
-            for (int k = 0; k < 10; ++k) {
-                input_stream >> probability;
-                probabilities_[i][j][k][0] = probability;
-                input_stream >> probability;
-                probabilities_[i][j][k][1] = probability;
-            }
-        }
-    }
+    return 0;
 }
+
 
 DataFile Model::getDataFile() {
     return dataFile;
 }
 
-std::vector<double> Model::calculatePercentageOfEachNumber() {
+std::vector<double> Model::calcAppearancesOfEachNumber() {
     std::vector<double> percentages(10);
     for (int l = 0; l < trueValues_.size(); ++l) {
         int index = std::stoi(trueValues_[l]);
@@ -100,7 +114,7 @@ std::vector<double> Model::calculatePercentageOfEachNumber() {
 
 void Model::testPrint() const {
     for (int i = 0; i < 10; ++i) {
-        std::cout << probabilities_[15][15][i][1] << std::endl;
+        std::cout << probabilities_[20][20][i][1] << std::endl;
     }
 }
 
