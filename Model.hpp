@@ -13,10 +13,11 @@
 class Model {
 public:
     explicit Model(std::string trainingImageFileName, std::string trainingImageLabelsName);
+    explicit Model(std::string existingModelFileName);
     DataFile getDataFile();
     void testPrint() const;
-    friend std::istream & operator>>(std::istream& input_stream, Model &model);
-    friend std::ostream & operator<<(std::ostream& output_stream, const Model &model);
+    friend std::ifstream & operator>>(std::ifstream& input_stream, Model &model);
+    friend std::ofstream & operator<<(std::ofstream& output_stream, const Model &model);
 
 
 private:

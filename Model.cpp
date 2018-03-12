@@ -5,6 +5,7 @@
 #include "Model.hpp"
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileName) :
                 dataFile(trainingImageFileName), probabilities_{0} {
@@ -65,6 +66,23 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
 
 }
 
+// Creates a new Model object with an existing model file.
+Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0} {
+    std::ifstream input_stream(existingModelFileName);
+
+    double probability;
+    for (int i = 0; i < Model::DIMENSIONS; ++i) {
+        for (int j = 0; j < Model::DIMENSIONS; ++j) {
+            for (int k = 0; k < 10; ++k) {
+                input_stream >> probability;
+                probabilities_[i][j][k][0] = probability;
+                input_stream >> probability;
+                probabilities_[i][j][k][1] = probability;
+            }
+        }
+    }
+}
+
 DataFile Model::getDataFile() {
     return dataFile;
 }
@@ -76,29 +94,35 @@ std::vector<double> Model::calculatePercentageOfEachNumber() {
         percentages[index]++;
     }
 
-//    for (double &m : percentages) {
-//        m /= 5000.0;
-//    }
-
     return percentages;
 
 }
 
 void Model::testPrint() const {
     for (int i = 0; i < 10; ++i) {
-        std::cout << probabilities_[4][4][i][1] << std::endl;
+        std::cout << probabilities_[15][15][i][1] << std::endl;
     }
 }
 
 // Read a model from a file.
-std::istream& operator>>(std::istream& input_stream, Model &model) {
-
+std::ifstream& operator>>(std::ifstream& input_stream, Model &model) {
+    double probability;
+    for (int i = 0; i < Model::DIMENSIONS; ++i) {
+        for (int j = 0; j < Model::DIMENSIONS; ++j) {
+            for (int k = 0; k < 10; ++k) {
+                input_stream >> probability;
+                model.probabilities_[i][j][k][0] = probability;
+                input_stream >> probability;
+                model.probabilities_[i][j][k][1] = probability;
+            }
+        }
+    }
 
     return input_stream;
 }
 
 // Write a model to a file
-std::ostream& operator<<(std::ostream& output_stream, const Model &model) {
+std::ofstream& operator<<(std::ofstream& output_stream, const Model &model) {
     for (int i = 0; i < Model::DIMENSIONS; ++i) {
         for (int j = 0; j < Model::DIMENSIONS; ++j) {
             for (int k = 0; k < 10; ++k) {
@@ -109,6 +133,8 @@ std::ostream& operator<<(std::ostream& output_stream, const Model &model) {
             }
         }
     }
+
+    output_stream.close();
 
     return output_stream;
 }

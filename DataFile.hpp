@@ -13,6 +13,7 @@ using std::vector;
 
 class DataFile {
 public:
+    DataFile()=default;
     explicit DataFile(std::string fileName);
     void printGivenFeatureVector(int index);
     int getNumberOfImages();
