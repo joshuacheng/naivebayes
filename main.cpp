@@ -12,16 +12,16 @@
 using std::string;
 
 int main() {
-    std::ifstream file("digitdata/trainingimages");
+    std::ifstream file("digitdata/testimages");
 //    std::ofstream modelFile("currentModel");
     FeatureVector featureVector;
 
-    Model model("digitdata/trainingimages", "digitdata/traininglabels");
-//    modelFile << model;
-//    Model model("currentModel");
+//    Model model1("digitdata/trainingimages", "digitdata/traininglabels");
+//    modelFile << model1;
+    Model model("currentModel");
 //    model.testPrint();
 
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 20; ++i) {
         file >> featureVector;
 
         std::cout << featureVector;

@@ -17,7 +17,7 @@ public:
     int classifyImage(FeatureVector image);
     void fillOutProbabilities();
     DataFile getDataFile();
-    void testPrint() const;
+    void printOutAppearances();
     friend std::ifstream & operator>>(std::ifstream& input_stream, Model &model);
     friend std::ofstream & operator<<(std::ofstream& output_stream, Model &model);
 

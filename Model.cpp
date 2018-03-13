@@ -117,6 +117,12 @@ DataFile Model::getDataFile() {
     return dataFile;
 }
 
+void Model::printOutAppearances() {
+    for (int i = 0; i < 10; ++i) {
+        std::cout << appearancesOfEachNumber[i] << std::endl;
+    }
+}
+
 /** Calculates how many times each number appears in
  *
  * @param probabilitiesInstead
@@ -139,12 +145,6 @@ std::vector<double> Model::calcAppearancesOfEachNumber(bool probabilitiesInstead
 }
 
 
-void Model::testPrint() const {
-    for (int i = 0; i < 10; ++i) {
-        std::cout << probabilities_[20][20][i][1] << std::endl;
-    }
-}
-
 // Read a model from a file.
 std::ifstream& operator>>(std::ifstream& input_stream, Model &model) {
     double probability;
@@ -158,6 +158,7 @@ std::ifstream& operator>>(std::ifstream& input_stream, Model &model) {
             }
         }
     }
+
 
     double percentageOfAppearance;
     for (int l = 0; l < 10; ++l) {
@@ -194,7 +195,7 @@ std::ofstream& operator<<(std::ofstream& output_stream, Model &model) {
         }
     }
 
-    std::vector<double> percentageOfEachNumber = model.calcAppearancesOfEachNumber(true);
+    std::vector<double> percentageOfEachNumber = model.appearancesOfEachNumber;
 
     for (int l = 0; l < 10; ++l) {
         output_stream << percentageOfEachNumber[l] << " ";
