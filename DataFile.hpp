@@ -21,8 +21,6 @@ public:
 private:
     vector<FeatureVector> images_;
 
-
-
 };
 
 #endif //NAIVEBAYES_DATAFILE_HPP

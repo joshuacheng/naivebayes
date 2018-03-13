@@ -5,10 +5,10 @@
 #ifndef NAIVEBAYES_MODEL_HPP
 #define NAIVEBAYES_MODEL_HPP
 
-#include "TrainingData.hpp"
 #include <string>
 #include <istream>
 #include <fstream>
+#include "DataFile.hpp"
 
 class Model {
 public:
@@ -29,7 +29,7 @@ private:
     std::vector<double> appearancesOfEachNumber;
     DataFile dataFile;
     std::vector<std::string> trueValues_;
-    std::vector<double> calcAppearancesOfEachNumber(bool probabilitiesInstead);
+    std::vector<double> calcAppearancesOfEachNumber();
 
 };
 

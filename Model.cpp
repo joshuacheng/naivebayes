@@ -9,6 +9,11 @@
 #include <algorithm>
 #include <iterator>
 
+/** This constructor creates a new Model with training data.
+ *
+ * @param trainingImageFileName    file name of the training images file
+ * @param trainingLabelsFileName   file name of training labels file
+ */
 Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileName) :
                 dataFile(trainingImageFileName), probabilities_{0}, appearancesOfEachNumber(10) {
 
@@ -28,13 +33,20 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
 
 }
 
-// Creates a new Model object with an existing model file.
+/** Creates a new Model object with an existing model file.
+ *
+ */
 Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0}, appearancesOfEachNumber(10) {
     std::ifstream input_stream(existingModelFileName);
 
     input_stream >> *this;
 }
 
+/** Classifies an image as a number.
+ *
+ * @param vector    the image as a FeatureVector
+ * @return          the number that the image represents
+ */
 int Model::classifyImage(const FeatureVector vector) {
     std::vector<bool> image = vector.getFeatureArray();
     std::vector<double> priors(10);
@@ -57,10 +69,7 @@ int Model::classifyImage(const FeatureVector vector) {
         }
     }
 
-//    for (int k = 0; k < 10; ++k) {
-//        std::cout << appearancesOfEachNumber[k] << std::endl;
-//    }
-
+    // This gives the index of the maximum probability in the vector.
     int closestMatch = std::distance(priors.begin(), std::max_element(priors.begin(), priors.end()));
 
     return closestMatch;
@@ -72,7 +81,7 @@ int Model::classifyImage(const FeatureVector vector) {
  *
  */
 void Model::fillOutProbabilities() {
-    calcAppearancesOfEachNumber(false);
+    calcAppearancesOfEachNumber();
     std::vector<FeatureVector> testImages = dataFile.getImages();
     int numberOfImages = static_cast<int>(trueValues_.size());
 
@@ -111,8 +120,6 @@ void Model::fillOutProbabilities() {
     }
 }
 
-
-
 DataFile Model::getDataFile() {
     return dataFile;
 }
@@ -123,29 +130,26 @@ void Model::printOutAppearances() {
     }
 }
 
-/** Calculates how many times each number appears in
+/** Calculates how many times each number appears in true_values
  *
- * @param probabilitiesInstead
- * @return
+ * @return  the appearances of each number vector.
  */
-std::vector<double> Model::calcAppearancesOfEachNumber(bool probabilitiesInstead) {
+std::vector<double> Model::calcAppearancesOfEachNumber() {
     for (int l = 0; l < trueValues_.size(); ++l) {
         int index = std::stoi(trueValues_[l]);
         appearancesOfEachNumber[index] += 1.0;
-    }
-
-    if (probabilitiesInstead) {
-        for (int i = 0; i < 10; ++i) {
-            appearancesOfEachNumber[i] /= 5000.0;
-        }
     }
 
     return appearancesOfEachNumber;
 
 }
 
-
-// Read a model from a file.
+/** Reads a model from a model file.
+ *
+ * @param input_stream  file to read from
+ * @param model         model object to read to
+ * @return              the file stream
+ */
 std::ifstream& operator>>(std::ifstream& input_stream, Model &model) {
     double probability;
     for (int i = 0; i < Model::DIMENSIONS; ++i) {

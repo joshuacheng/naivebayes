@@ -6,8 +6,6 @@
 #include <fstream>
 #include <iostream>
 
-//TODO: find a way to automatically stop adding feature vectors if the file is done.
-
 /** Constructor for a data file, which just contains all the feature vectors
  *  of a given file.
  *

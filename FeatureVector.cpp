@@ -35,7 +35,9 @@ std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVect
 
 }
 
-// Overloaded << operator just for printing out a feature vector with 1's and 0's.
+/**
+ * Overloaded << operator just for printing out a feature vector with 1's and 0's.
+ */
 std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector) {
 
     for (int i = 0; i < featureVector.features_.size(); ++i) {
