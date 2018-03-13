@@ -7,23 +7,32 @@
 #include "DataFile.hpp"
 #include "TrainingData.hpp"
 #include "Model.hpp"
+#include <cmath>
 
 using std::string;
 
 int main() {
-//    std::ifstream file("digitdata/trainingimages");
+    std::ifstream file("digitdata/trainingimages");
 //    std::ofstream modelFile("currentModel");
-//    DataFile dataFile("digitdata/trainingimages");
-//    dataFile.printGivenFeatureVector(4999);
-//    std::cout << dataFile.getSize() << std::endl;
+    FeatureVector featureVector;
 
     Model model("digitdata/trainingimages", "digitdata/traininglabels");
-    model.testPrint();
+//    modelFile << model;
 //    Model model("currentModel");
 //    model.testPrint();
-//    modelFile << model;
-//    DataFile file = model.getDataFile();
-//    file.printGivenFeatureVector(5);
+
+    for (int i = 0; i < 10; ++i) {
+        file >> featureVector;
+
+        std::cout << featureVector;
+
+        int guess = model.classifyImage(featureVector);
+
+        std::cout << guess << std::endl;
+    }
+
+//    std::cout << log(0.00204082) << std::endl;
+
 
 
 //    }

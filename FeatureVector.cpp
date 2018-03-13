@@ -18,6 +18,10 @@ std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVect
         return input_stream;
     }
 
+    if (featureVector.features_.size() > 0) {
+        featureVector.features_.clear();
+    }
+
     std::string str;
 
     for (int i = 0; i < FeatureVector::DIMENSIONS; ++i) {
@@ -50,9 +54,11 @@ std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &feat
     return output_stream;
 }
 
-std::vector<bool> FeatureVector::getFeatureArray() {
+std::vector<bool> FeatureVector::getFeatureArray() const {
     return features_;
 }
+
+
 
 
 

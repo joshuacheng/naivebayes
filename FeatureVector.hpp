@@ -10,15 +10,19 @@
 class FeatureVector {
 
     static const int DIMENSIONS = 28;
-    std::vector<bool> features_;
 
+    /* This 1D vector represents a 2D image by
+       just placing everything in one row.
+       Converting from indices a -> (b, c) is (a / 28, a % 28).
+    */
+    std::vector<bool> features_;
 public:
 
     FeatureVector()=default;
 
     friend std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector);
     friend std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector);
-    std::vector<bool> getFeatureArray();
+    std::vector<bool> getFeatureArray() const;
 
 };
 

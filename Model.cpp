@@ -6,9 +6,11 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+#include <iterator>
 
 Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileName) :
-                dataFile(trainingImageFileName), probabilities_{0} {
+                dataFile(trainingImageFileName), probabilities_{0}, appearancesOfEachNumber(10) {
 
     std::ifstream trainingLabelsFile(trainingLabelsFileName);
     std::string currLine;
@@ -27,32 +29,50 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
 }
 
 // Creates a new Model object with an existing model file.
-Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0} {
+Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0}, appearancesOfEachNumber(10) {
     std::ifstream input_stream(existingModelFileName);
 
-    double probability;
-    for (int i = 0; i < Model::DIMENSIONS; ++i) {
-        for (int j = 0; j < Model::DIMENSIONS; ++j) {
-            for (int k = 0; k < 10; ++k) {
-                input_stream >> probability;
-                if (input_stream.eof()) {
-                    std::cout << "This model is not long enough." << std::endl;
-                    return;
+    input_stream >> *this;
+}
+
+int Model::classifyImage(const FeatureVector vector) {
+    std::vector<bool> image = vector.getFeatureArray();
+    std::vector<double> priors(10);
+
+    // Check every possible class this number could be.
+    for (int num = 0; num < 10; ++num) {
+
+        // Probability of the class in the entire file.
+        priors[num] += (log(appearancesOfEachNumber[num]));
+
+        // Iterate from pixel (1,1) to (28,28) for this specific number class.
+        for (int i = 0; i < DIMENSIONS; ++i) {
+            for (int j = 0; j < DIMENSIONS; ++j) {
+                if (image[i*28 + j]) {
+                    priors[num] += log(probabilities_[i][j][num][1]);
+                } else {
+                    priors[num] += log(probabilities_[i][j][num][0]);
                 }
-                probabilities_[i][j][k][0] = probability;
-                input_stream >> probability;
-                probabilities_[i][j][k][1] = probability;
             }
         }
     }
+
+//    for (int k = 0; k < 10; ++k) {
+//        std::cout << appearancesOfEachNumber[k] << std::endl;
+//    }
+
+    int closestMatch = std::distance(priors.begin(), std::max_element(priors.begin(), priors.end()));
+
+    return closestMatch;
 }
+
 
 /** This method fills out the 4D probabilities array by using all
  *  the member objects which have been instantiated at this point.
  *
  */
 void Model::fillOutProbabilities() {
-    std::vector<double> appearancesOfEachNumber = calcAppearancesOfEachNumber();
+    calcAppearancesOfEachNumber(false);
     std::vector<FeatureVector> testImages = dataFile.getImages();
     int numberOfImages = static_cast<int>(trueValues_.size());
 
@@ -91,26 +111,33 @@ void Model::fillOutProbabilities() {
     }
 }
 
-int Model::classifyFeatureVector(const FeatureVector vector) {
-
-    return 0;
-}
 
 
 DataFile Model::getDataFile() {
     return dataFile;
 }
 
-std::vector<double> Model::calcAppearancesOfEachNumber() {
-    std::vector<double> percentages(10);
+/** Calculates how many times each number appears in
+ *
+ * @param probabilitiesInstead
+ * @return
+ */
+std::vector<double> Model::calcAppearancesOfEachNumber(bool probabilitiesInstead) {
     for (int l = 0; l < trueValues_.size(); ++l) {
         int index = std::stoi(trueValues_[l]);
-        percentages[index]++;
+        appearancesOfEachNumber[index] += 1.0;
     }
 
-    return percentages;
+    if (probabilitiesInstead) {
+        for (int i = 0; i < 10; ++i) {
+            appearancesOfEachNumber[i] /= 5000.0;
+        }
+    }
+
+    return appearancesOfEachNumber;
 
 }
+
 
 void Model::testPrint() const {
     for (int i = 0; i < 10; ++i) {
@@ -132,21 +159,48 @@ std::ifstream& operator>>(std::ifstream& input_stream, Model &model) {
         }
     }
 
+    double percentageOfAppearance;
+    for (int l = 0; l < 10; ++l) {
+        input_stream >> percentageOfAppearance;
+        model.appearancesOfEachNumber[l] = percentageOfAppearance;
+    }
+
     return input_stream;
 }
 
-// Write a model to a file
-std::ofstream& operator<<(std::ofstream& output_stream, const Model &model) {
+/** Writes a model to a file by printing out all
+ *  Only call this method if the model was initialized by taking
+ *  training images and labels, otherwise its true values size is 0.
+ *
+ * @param output_stream file to write to
+ * @param model         model to write from
+ * @return              the file stream
+ */
+std::ofstream& operator<<(std::ofstream& output_stream, Model &model) {
+    if (!output_stream) {
+        return output_stream;
+    }
+
+    if (model.trueValues_.size() == 0) {
+        return output_stream;
+    }
+
     for (int i = 0; i < Model::DIMENSIONS; ++i) {
         for (int j = 0; j < Model::DIMENSIONS; ++j) {
             for (int k = 0; k < 10; ++k) {
                 output_stream << model.probabilities_[i][j][k][0] << " " << model.probabilities_[i][j][k][1] << " ";
             }
-            if (i != Model::DIMENSIONS - 1 || j != Model::DIMENSIONS - 1) {
-                output_stream << std::endl;
-            }
+            output_stream << std::endl;
         }
     }
+
+    std::vector<double> percentageOfEachNumber = model.calcAppearancesOfEachNumber(true);
+
+    for (int l = 0; l < 10; ++l) {
+        output_stream << percentageOfEachNumber[l] << " ";
+    }
+
+
 
     output_stream.close();
 
