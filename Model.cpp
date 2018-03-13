@@ -42,6 +42,42 @@ Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0},
     input_stream >> *this;
 }
 
+/** This function takes in a file of test images and attempts to classify all of the images
+ *  based on past training. It returns the confusion matrix, a 10x10 vector.
+ *
+ * @param testImagesFileName     file name of test images
+ * @param testLabelsFileName     file name of test labels
+ * @return                       confusion matrix
+ */
+std::vector<std::vector<double>> Model::classifyFile(std::string testImagesFileName, std::string testLabelsFileName) {
+    std::vector<std::vector<double>> confusionMatrix (10, std::vector<double>(10));
+
+    // Read all test images into a DataFile object.
+    DataFile testImages(testImagesFileName);
+    std::vector<FeatureVector> allImages = testImages.getImages();
+
+    std::vector<std::string> realNumbers;
+    std::ifstream testLabelsStream(testLabelsFileName);
+    std::string currLine;
+
+    // Read all test labels into a string vector.
+    while (testLabelsStream) {
+        getline(testLabelsStream, currLine);
+
+        realNumbers.push_back(currLine);
+    }
+
+    // Classify all images and place frequencies into confusion matrix.
+    for (int i = 0; i < allImages.size(); ++i) {
+        int guess = classifyImage(allImages[i]);
+        int actual = std::stoi(realNumbers[i]);
+        confusionMatrix[guess][actual]++;
+    }
+
+    return confusionMatrix;
+
+}
+
 /** Classifies an image as a number.
  *
  * @param vector    the image as a FeatureVector
