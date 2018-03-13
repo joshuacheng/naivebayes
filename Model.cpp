@@ -30,7 +30,6 @@ Model::Model(std::string trainingImageFileName, std::string trainingLabelsFileNa
     trueValues_.pop_back();
 
     fillOutProbabilities();
-
 }
 
 /** Creates a new Model object with an existing model file.
@@ -44,6 +43,9 @@ Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0},
 
 /** This function takes in a file of test images and attempts to classify all of the images
  *  based on past training. It returns the confusion matrix, a 10x10 vector.
+ *  To read the confusion matrix:
+ *  At row index r and column index c, the element is the number of times that the model
+ *  guesses c when the number is actually r.
  *
  * @param testImagesFileName     file name of test images
  * @param testLabelsFileName     file name of test labels
@@ -71,7 +73,7 @@ std::vector<std::vector<double>> Model::classifyFile(std::string testImagesFileN
     for (int i = 0; i < allImages.size(); ++i) {
         int guess = classifyImage(allImages[i]);
         int actual = std::stoi(realNumbers[i]);
-        confusionMatrix[guess][actual]++;
+        confusionMatrix[actual][guess]++;
     }
 
     return confusionMatrix;
@@ -111,6 +113,10 @@ int Model::classifyImage(const FeatureVector vector) {
     return closestMatch;
 }
 
+void Model::printPrototypicalExtrema(std::string testImagesFileName, std::string testLabelsFileName) {
+
+
+}
 
 /** This method fills out the 4D probabilities array by using all
  *  the member objects which have been instantiated at this point.
@@ -135,7 +141,6 @@ void Model::fillOutProbabilities() {
                 // The index calculation is to convert (i, j) into 1 dimension.
                 if (currentFeatureArray[i*28 + j]) {
 
-                    // This represents P(pixel is black/white and class)
                     probabilities_[i][j][realValueOfCurrentImage][1] += 1.0;
                 }
             }
@@ -146,12 +151,11 @@ void Model::fillOutProbabilities() {
                 probabilities_[i][j][number][1] = (probabilities_[i][j][number][1] + LAPLACEK) /
                                                   (appearancesOfEachNumber[number] + (2 * LAPLACEK));
 
-                // (i,j,l,0) is just the complement to (i,j,l,1). Since there are
-                // only two outcomes, one is just 1 minus the other.
+                // (i,j,l,0) is just the complement to (i,j,l,1).
+                // Since there are only two outcomes, one is just 1 minus the other.
                 probabilities_[i][j][number][0] = 1.0 - probabilities_[i][j][number][1];
             }
 
-            std::cout << "Pixel (" << i << ", " << j << ") done" << std::endl;
         }
     }
 }

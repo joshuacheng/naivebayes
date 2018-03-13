@@ -6,6 +6,7 @@
 #define NAIVEBAYES_FEATUREVECTOR_HPP
 #include <istream>
 #include <vector>
+#include "catch.hpp"
 
 class FeatureVector {
 
