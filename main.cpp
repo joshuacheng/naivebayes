@@ -11,15 +11,19 @@
 
 using std::string;
 using std::vector;
+using std::cout;
 
 void classifyFileAndReportMatrix(Model model);
 void printConfusionMatrix(vector<vector<double>> confusionMatrix);
 
+//TODO: be able to show the user some of the guesses that the model made.
 
 int main() {
+    std::cout << "Hello World" << std::endl;
+
     std::cout << "To start, enter one of the two: \n" <<
-                 "'train': Trains a model based on the images in digitdata/trainingimages and" <<
-                 " labels in digitdata/traininglabels. \n" <<
+                 "'train': Trains a model based on the images in data/trainingimages and" <<
+                 " labels in data/traininglabels. \n" <<
                  "'load' : Loads the model in currentModel.\n" <<
                     std::endl;
 
@@ -30,16 +34,17 @@ int main() {
 
 
     if (input == "train") {
-        Model model("digitdata/trainingimages", "digitdata/traininglabels");
+        Model model("../data/trainingimages", "../data/traininglabels");
         std::cout << "Model trained. Now you can:\n" <<
                   "'write' : Writes this model to the currentModel file.\n" <<
-                  "'classify' : Classifies the images in digitdata/testimages and reports confusion matrix.\n" <<
+                  "'classify' : Classifies the images in data/testimages and reports confusion matrix.\n" <<
                   "'exit'     : Exit." << std::endl;
         while (true) {
             getline(std::cin, input);
             if (input == "write") {
-                std::ofstream modelFile("currentFile");
+                std::ofstream modelFile("../data/currentModel");
                 modelFile << model;
+                std::cout << "Model written to file." << std::endl;
             } else if (input == "classify") {
                 classifyFileAndReportMatrix(model);
             } else if (input == "exit") {
@@ -49,9 +54,9 @@ int main() {
             }
         }
     } else {
-        Model model("currentModel");
+        Model model("../data/currentModel");
         std::cout << "Model pulled from file. Now you can:\n" <<
-                     "'classify' : Classifies the images in digitdata/testimages and reports confusion matrix.\n" <<
+                     "'classify' : Classifies the images in data/testimages and reports confusion matrix.\n" <<
                      "'exit'     : Exit." << std::endl;
         while (true) {
              getline(std::cin, input);
@@ -69,7 +74,7 @@ int main() {
 }
 
 void classifyFileAndReportMatrix(Model model) {
-    vector<vector<double>> matrix = model.classifyFile("digitdata/testimages", "digitdata/testlabels");
+    vector<vector<double>> matrix = model.classifyFile("../data/testimages", "../data/testlabels");
     printConfusionMatrix(matrix);
 }
 

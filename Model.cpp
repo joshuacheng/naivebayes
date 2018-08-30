@@ -46,6 +46,8 @@ Model::Model(std::string existingModelFileName) : dataFile(), probabilities_{0},
  *  To read the confusion matrix:
  *  At row index r and column index c, the element is the number of times that the model
  *  guesses c when the number is actually r.
+ *  This means a strong model will have a matrix that has a line from the top left to bottom right of large
+ *  numbers.
  *
  * @param testImagesFileName     file name of test images
  * @param testLabelsFileName     file name of test labels
@@ -113,10 +115,6 @@ int Model::classifyImage(const FeatureVector vector) {
     return closestMatch;
 }
 
-void Model::printPrototypicalExtrema(std::string testImagesFileName, std::string testLabelsFileName) {
-
-
-}
 
 /** This method fills out the 4D probabilities array by using all
  *  the member objects which have been instantiated at this point.

@@ -8,6 +8,10 @@
 #include <vector>
 #include "catch.hpp"
 
+/*
+ * FeatureVector is just a fancy name for a 28x28 image of a number that we will be using.
+ */
+
 class FeatureVector {
 
     static const int DIMENSIONS = 28;
@@ -24,6 +28,7 @@ public:
     friend std::istream & operator>>(std::istream& input_stream, FeatureVector &featureVector);
     friend std::ostream & operator<<(std::ostream& output_stream, const FeatureVector &featureVector);
     std::vector<bool> getFeatureArray() const;
+
 
 };
 

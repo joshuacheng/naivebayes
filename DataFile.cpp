@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-/** Constructor for a data file, which just contains all the feature vectors
+/** Constructor for a data file, which just contains all the feature vectors (images)
  *  of a given file.
  *
  * @param fileName

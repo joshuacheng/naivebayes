@@ -17,7 +17,6 @@ public:
     explicit Model(std::string existingModelFileName);
     std::vector<std::vector<double>> classifyFile(std::string testImagesFileName, std::string testLabelsFileName);
     int classifyImage(FeatureVector image);
-    void printPrototypicalExtrema(std::string testImagesFileName, std::string testLabelsFileName);
     void fillOutProbabilities();
     DataFile getDataFile();
     void printOutAppearances();
